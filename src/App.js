@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Question } from "./components/Question/Question";
+import * as api from "./api/index.js";
+import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Start } from "./components/Start";
+import { Results } from "./components/Results/Results";
 
 function App() {
+  // set states
+  const [questions, setQuestions] = useState([]);
+
+  // get all questions from database
+  useEffect(() => {
+    const getQuestions = async () => {
+      const questions = await api.fetchAllQuestions();
+      setQuestions(questions);
+    };
+    getQuestions();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route
+            path={"/questions/:id"}
+            element={questions.length > 0 && <Question questions={questions} />}
+          />
+          <Route path="/results" element={<Results />} />
+          <Route path="/*" element={<Start />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
