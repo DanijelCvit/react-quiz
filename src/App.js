@@ -9,20 +9,20 @@ import { Form } from "./components/Form";
 import { Delete } from "./components/Delete";
 
 function App() {
-  // set states
+  // Set states
   const [questions, setQuestions] = useState([]);
   const [showForm, setShowForm] = useState({ show: false, action: "edit" });
 
-  // get all questions from database
+  // Get all questions from database
   useEffect(() => {
     const getQuestions = async () => {
       const questions = await api.fetchAllQuestions();
       setQuestions(questions);
-      console.log("Getting database...", questions.length);
     };
     getQuestions();
   }, []);
 
+  // Called when Editing a question or submitting an answer
   const handleSubmit = async (id, update) => {
     const ID = questions[id]._id;
     const updatedQuestion = await api.updateQuestion(ID, update);
@@ -32,6 +32,7 @@ function App() {
     setQuestions(newQuestions);
   };
 
+  // Resets 'selected' answer attribute in the database at start of each quiz
   const resetDatabase = async () => {
     const newQuestions = [];
 
@@ -44,23 +45,20 @@ function App() {
     setQuestions(newQuestions);
   };
 
+  // Called when deleting a question
   const handleDelete = async (id) => {
-    console.log("Deleting...");
     const ID = questions[id]._id;
-    const message = await api.deleteQuestion(ID);
+    await api.deleteQuestion(ID);
     const newQuestions = questions.filter((question) => question._id !== ID);
     setQuestions(newQuestions);
-
-    console.log(message);
   };
 
+  // Called when creating a new question
   const handleCreate = async (question) => {
     const newQuestion = await api.createQuestion(question);
 
     const newQuestions = [...questions, newQuestion];
     setQuestions(newQuestions);
-
-    console.log(newQuestion);
   };
 
   return (
@@ -75,7 +73,7 @@ function App() {
                   <div className="position-absolute top-0 end-0">
                     <button
                       onClick={() => {
-                        setShowForm({ show: !showForm.show, action: "create" });
+                        setShowForm({ show: true, action: "create" });
                       }}
                       className="btn btn-link"
                     >
@@ -83,13 +81,19 @@ function App() {
                     </button>
                     <button
                       onClick={() => {
-                        setShowForm({ show: !showForm.show, action: "edit" });
+                        setShowForm({ show: true, action: "edit" });
                       }}
                       className="btn btn-link"
                     >
                       <span className="material-icons">edit</span>
                     </button>
-                    <Delete handleDelete={handleDelete} questions={questions} />
+                    {
+                      <Delete
+                        handleDelete={handleDelete}
+                        questions={questions}
+                        disabled={showForm.show}
+                      />
+                    }
                   </div>
                   {showForm.show ? (
                     <Form

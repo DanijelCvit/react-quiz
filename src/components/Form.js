@@ -28,15 +28,35 @@ export const Form = ({ questions, handleAction, setShowForm, showForm }) => {
         text,
         answers: { a: answerA, b: answerB, c: answerC, d: answerD },
         correct,
+        selected: null,
       });
     }
 
+    // Hide form after submission
     setShowForm({ show: false, action: "edit" });
   };
 
   return (
-    <form className="question" style={{ width: "500px" }} onSubmit={onSubmit}>
+    <form
+      className="question position-relative"
+      style={{ width: "500px" }}
+      onSubmit={onSubmit}
+    >
+      <div className="position-absolute top-0 end-0">
+        {/* Cancel button */}
+        <button
+          type="cancel"
+          onClick={() => {
+            setShowForm({ show: false, action: "create" });
+          }}
+          className="btn btn-link"
+        >
+          <span className="material-icons">close</span>
+        </button>
+      </div>
+      {/* Header */}
       <h1>{showForm.action.toUpperCase()}</h1>
+      {/* Question */}
       <div className="mb-3 row">
         <input
           className="form-control"
@@ -48,6 +68,7 @@ export const Form = ({ questions, handleAction, setShowForm, showForm }) => {
           }}
         />
       </div>
+      {/* Answer a */}
       <div className="mb-3 row">
         <label className="col-sm-1 col-form-label" htmlFor="a">
           a
@@ -65,6 +86,7 @@ export const Form = ({ questions, handleAction, setShowForm, showForm }) => {
           />
         </div>
       </div>
+      {/* Answer b */}
       <div className="mb-3 row">
         <label className="col-sm-1 col-form-label" htmlFor="b">
           b
@@ -82,6 +104,7 @@ export const Form = ({ questions, handleAction, setShowForm, showForm }) => {
           />
         </div>
       </div>
+      {/* Answer c */}
       <div className="mb-3 row">
         <label className="col-sm-1 col-form-label" htmlFor="c">
           c
@@ -99,6 +122,7 @@ export const Form = ({ questions, handleAction, setShowForm, showForm }) => {
           />
         </div>
       </div>
+      {/* Answer d */}
       <div className="mb-3 row">
         <label className="col-sm-1 col-form-label" htmlFor="d">
           d
@@ -116,6 +140,7 @@ export const Form = ({ questions, handleAction, setShowForm, showForm }) => {
           />
         </div>
       </div>
+      {/* Additional choice for create form, set correct answer for new question */}
       {showForm.action === "create" ? (
         <div className="mb-3 row">
           <label className="col-sm-2 col-form-label" htmlFor="correct">
@@ -137,6 +162,7 @@ export const Form = ({ questions, handleAction, setShowForm, showForm }) => {
       ) : (
         ""
       )}
+      {/* Save */}
       <div className="d-grid gap-2">
         <input type="submit" value="Save" className="btn btn-primary" />
       </div>

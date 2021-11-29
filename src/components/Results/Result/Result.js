@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 
 export const Result = ({ question, number }) => {
-  console.log(question.correct, question.selected);
-
   return (
     <>
       <li>
@@ -12,7 +10,6 @@ export const Result = ({ question, number }) => {
           }
           to={`/questions/${number}`}
         >
-          {" "}
           {`${number + 1}. ${question.text}`}
         </Link>
       </li>

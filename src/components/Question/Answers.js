@@ -1,6 +1,6 @@
 import { Answer } from "./Answer";
 
-export const Answers = ({ answers, saveAnswer, selected }) => {
+export const Answers = ({ answers, saveAnswer, selected, disabled }) => {
   const newAnswers = Object.entries(answers);
 
   return (
@@ -13,6 +13,7 @@ export const Answers = ({ answers, saveAnswer, selected }) => {
             id={answerKey}
             saveAnswer={saveAnswer}
             selected={selected}
+            disabled={disabled}
           />
         ))}
       </ul>
