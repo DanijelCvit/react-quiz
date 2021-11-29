@@ -1,6 +1,9 @@
 .App {
   display: flex;
   justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
 }
 
 ul {
@@ -8,9 +11,34 @@ ul {
 }
 
 .question {
+  margin: 0 2rem;
   text-align: left;
+  border: 1px solid lightgray;
+  padding: 2rem;
 }
 
 .buttons-question {
   text-align: center;
+}
+
+.selected {
+  color: orange;
+}
+
+.correct {
+  color: green;
+}
+
+.incorrect {
+  color: red;
+}
+
+h1,
+.center {
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
 }
