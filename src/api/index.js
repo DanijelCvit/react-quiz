@@ -1,4 +1,4 @@
-const url = `http://localhost:5000/questions`;
+const url = "https://vanilla-js-quiz.herokuapp.com/questions";
 
 export const fetchAllQuestions = async () => {
   const res = await fetch(url);
