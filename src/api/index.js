@@ -24,3 +24,23 @@ export const updateQuestion = async (id, update) => {
   const data = await res.json();
   return data;
 };
+export const deleteQuestion = async (id) => {
+  const res = await fetch(`${url}/${id}`, {
+    method: "DELETE",
+  });
+  const data = await res.json();
+  return data;
+};
+
+export const createQuestion = async (question) => {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(question),
+  });
+
+  const data = await res.json();
+  return data;
+};

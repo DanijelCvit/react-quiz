@@ -5,7 +5,7 @@ export const Start = ({ resetDatabase }) => {
 
   return (
     <div>
-      <h1>START PAGE</h1>
+      <h1>JAVASCRIPT QUIZ</h1>
       <div className="center mt-4">
         <Link
           className="btn btn-primary"

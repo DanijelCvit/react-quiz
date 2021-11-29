@@ -6,17 +6,19 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Start } from "./components/Start";
 import { Results } from "./components/Results/Results";
 import { Form } from "./components/Form";
+import { Delete } from "./components/Delete";
 
 function App() {
   // set states
   const [questions, setQuestions] = useState([]);
-  const [showEditForm, setShowEditForm] = useState(false);
+  const [showForm, setShowForm] = useState({ show: false, action: "edit" });
 
   // get all questions from database
   useEffect(() => {
     const getQuestions = async () => {
       const questions = await api.fetchAllQuestions();
       setQuestions(questions);
+      console.log("Getting database...", questions.length);
     };
     getQuestions();
   }, []);
@@ -39,8 +41,26 @@ function App() {
       });
       newQuestions.push(updatedQuestion);
     }
-
     setQuestions(newQuestions);
+  };
+
+  const handleDelete = async (id) => {
+    console.log("Deleting...");
+    const ID = questions[id]._id;
+    const message = await api.deleteQuestion(ID);
+    const newQuestions = questions.filter((question) => question._id !== ID);
+    setQuestions(newQuestions);
+
+    console.log(message);
+  };
+
+  const handleCreate = async (question) => {
+    const newQuestion = await api.createQuestion(question);
+
+    const newQuestions = [...questions, newQuestion];
+    setQuestions(newQuestions);
+
+    console.log(newQuestion);
   };
 
   return (
@@ -55,18 +75,31 @@ function App() {
                   <div className="position-absolute top-0 end-0">
                     <button
                       onClick={() => {
-                        setShowEditForm(!showEditForm);
+                        setShowForm({ show: !showForm.show, action: "create" });
+                      }}
+                      className="btn btn-link"
+                    >
+                      <span className="material-icons">add</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowForm({ show: !showForm.show, action: "edit" });
                       }}
                       className="btn btn-link"
                     >
                       <span className="material-icons">edit</span>
                     </button>
-                    <button className="btn btn-link">
-                      <span className="material-icons">delete_outline</span>
-                    </button>
+                    <Delete handleDelete={handleDelete} questions={questions} />
                   </div>
-                  {showEditForm ? (
-                    <Form questions={questions} handleSubmit={handleSubmit} />
+                  {showForm.show ? (
+                    <Form
+                      questions={questions}
+                      handleAction={
+                        showForm.action === "edit" ? handleSubmit : handleCreate
+                      }
+                      setShowForm={setShowForm}
+                      showForm={showForm}
+                    />
                   ) : (
                     <Question
                       questions={questions}
